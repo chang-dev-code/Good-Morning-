@@ -1,0 +1,303 @@
+# Good-Morning-
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gift → Good Morning</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#ffffff10;
+      --text:#f6f7fb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; overflow:hidden;
+      display:grid; place-items:center;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(900px 500px at 15% 15%, #4f46e5 0%, transparent 55%),
+        radial-gradient(900px 500px at 85% 20%, #22c55e 0%, transparent 55%),
+        linear-gradient(135deg, #070b16, var(--bg));
+      color:var(--text);
+    }
+
+    .hint{
+      position:fixed; top:14px; left:50%; transform:translateX(-50%);
+      padding:10px 14px;
+      border:1px solid #ffffff22;
+      border-radius:999px;
+      background:#00000033;
+      backdrop-filter: blur(10px);
+      font-size:14px;
+      color:#d9dcff;
+      text-align:center;
+      user-select:none;
+    }
+
+    /* Gift travels across */
+    .stage{
+      position:relative;
+      width:min(980px, 92vw);
+      height:420px;
+      border-radius:26px;
+      border:1px solid #ffffff1a;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 24px 70px #00000055;
+      overflow:hidden;
+    }
+
+    .floor{
+      position:absolute; left:0; right:0; bottom:0;
+      height:120px;
+      background: linear-gradient(180deg, transparent, #00000035);
+    }
+
+    .runner{
+      position:absolute;
+      left:-220px;
+      bottom:110px;
+      width:220px; height:220px;
+      animation: travel 6.5s ease-in-out infinite alternate;
+      will-change: transform;
+      cursor:pointer;
+      user-select:none;
+    }
+    @keyframes travel{
+      0%   { transform: translateX(0) translateY(0) rotate(-2deg); }
+      50%  { transform: translateX(calc(50% + 120px)) translateY(-6px) rotate(2deg); }
+      100% { transform: translateX(calc(100% + 220px)) translateY(0) rotate(-2deg); }
+    }
+
+    /* Gift box */
+    .gift{
+      position:absolute; inset:0;
+      display:grid; place-items:center;
+      transform: translateY(6px);
+    }
+    .box{
+      position:relative;
+      width:160px; height:120px;
+      border-radius:18px;
+      background: linear-gradient(180deg, #ff4d6d, #d61f4b);
+      box-shadow: 0 18px 38px #00000055;
+    }
+    .box:before{
+      content:"";
+      position:absolute; left:50%; top:0; bottom:0;
+      width:22px; transform:translateX(-50%);
+      background: linear-gradient(180deg, #ffd166, #f59e0b);
+      border-radius:12px;
+      opacity:.95;
+    }
+    .box:after{
+      content:"";
+      position:absolute; left:0; right:0; top:48px;
+      height:18px;
+      background: #ffffff12;
+      border-radius:999px;
+      filter: blur(0.2px);
+    }
+
+    .lid{
+      position:absolute;
+      left:50%; top:-18px;
+      width:178px; height:56px;
+      transform: translateX(-50%);
+      transform-origin: 20% 90%;
+      border-radius:18px;
+      background: linear-gradient(180deg, #ff6b85, #e11d48);
+      box-shadow: 0 12px 24px #00000040;
+      transition: transform 700ms cubic-bezier(.2,.9,.2,1);
+    }
+    .lid:before{
+      content:"";
+      position:absolute; left:50%; top:0; bottom:0;
+      width:22px; transform:translateX(-50%);
+      background: linear-gradient(180deg, #ffe08a, #f59e0b);
+      border-radius:12px;
+      opacity:.95;
+    }
+
+    .bow{
+      position:absolute;
+      left:50%; top:-44px;
+      width:110px; height:70px;
+      transform:translateX(-50%);
+      pointer-events:none;
+    }
+    .bow .loop{
+      position:absolute; top:18px;
+      width:52px; height:34px;
+      border:10px solid #ffd166;
+      border-radius:999px;
+      filter: drop-shadow(0 6px 10px #00000033);
+      background:transparent;
+    }
+    .bow .loop.left{ left:0; transform: rotate(-10deg); }
+    .bow .loop.right{ right:0; transform: rotate(10deg); }
+    .bow .knot{
+      position:absolute; left:50%; top:30px;
+      width:22px; height:22px;
+      transform:translateX(-50%);
+      background:#f59e0b;
+      border-radius:8px;
+      box-shadow: 0 6px 12px #00000033;
+    }
+
+    /* Open state */
+    .opened .lid{
+      transform: translateX(-50%) rotate(-125deg) translateY(-10px);
+    }
+
+    /* Message pop */
+    .message{
+      position:absolute;
+      left:50%; top:48%;
+      transform: translate(-50%,-50%) scale(.85);
+      width:min(720px, 88vw);
+      text-align:center;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity 450ms ease, transform 450ms ease;
+    }
+    .message h1{
+      margin:0 0 10px;
+      font-size: clamp(34px, 6vw, 64px);
+      letter-spacing: 2px;
+      text-shadow: 0 18px 40px #00000066;
+    }
+    .message p{
+      margin:0;
+      color:#d9dcff;
+      font-size: clamp(14px, 2.3vw, 18px);
+    }
+    .opened + .message{
+      opacity:1;
+      transform: translate(-50%,-50%) scale(1);
+    }
+
+    /* Confetti */
+    .confetti{
+      position:absolute; inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .c{
+      position:absolute;
+      top:-12px;
+      width:10px; height:14px;
+      border-radius:3px;
+      opacity:.95;
+      animation: fall linear forwards;
+    }
+    @keyframes fall{
+      to{ transform: translateY(110vh) rotate(720deg); }
+    }
+
+    /* Little spark glow when opened */
+    .glow{
+      position:absolute; left:50%; top:40%;
+      width:260px; height:260px;
+      transform:translate(-50%,-50%);
+      background: radial-gradient(circle at 50% 50%, #ffffffaa 0%, #ffd16655 25%, transparent 60%);
+      filter: blur(2px);
+      opacity:0;
+      transition: opacity 450ms ease;
+      pointer-events:none;
+    }
+    .opened .glow{ opacity:1; }
+
+    /* Accessibility focus */
+    .runner:focus{ outline: 3px solid #ffffff55; outline-offset: 8px; border-radius:22px; }
+  </style>
+</head>
+
+<body>
+  <div class="hint">Bấm vào hộp quà (hoặc nhấn Space/Enter) để mở 🎁 → “GOOD MORNING”</div>
+
+  <div class="stage">
+    <div class="confetti" id="confetti"></div>
+    <div class="floor"></div>
+
+    <div class="runner" id="runner" role="button" tabindex="0" aria-label="Open gift">
+      <div class="gift" id="gift">
+        <div class="glow"></div>
+
+        <div class="box">
+          <div class="lid"></div>
+          <div class="bow">
+            <div class="loop left"></div>
+            <div class="loop right"></div>
+            <div class="knot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message" id="message">
+      <h1>GOOD MORNING ☀️</h1>
+      <p>Chúc bạn một ngày mới vui vẻ, nhiều năng lượng và may mắn!</p>
+    </div>
+  </div>
+
+  <script>
+    const runner = document.getElementById('runner');
+    const gift = document.getElementById('gift');
+    const confetti = document.getElementById('confetti');
+
+    let opened = false;
+
+    function blastConfetti(){
+      confetti.innerHTML = "";
+      const n = 140;
+      for(let i=0;i<n;i++){
+        const d = document.createElement("div");
+        d.className = "c";
+        const left = Math.random()*100;
+        const delay = Math.random()*0.25;
+        const dur = 2.2 + Math.random()*1.8;
+        const size = 6 + Math.random()*10;
+
+        d.style.left = left + "vw";
+        d.style.animationDelay = delay + "s";
+        d.style.animationDuration = dur + "s";
+        d.style.width = size + "px";
+        d.style.height = (size*1.2) + "px";
+        d.style.background = `hsl(${Math.random()*360}, 90%, 60%)`;
+        d.style.transform = `rotate(${Math.random()*180}deg)`;
+        confetti.appendChild(d);
+      }
+      setTimeout(()=> confetti.innerHTML = "", 4500);
+    }
+
+    function openGift(){
+      if(opened) return;
+      opened = true;
+
+      gift.classList.add("opened");
+
+      // stop moving at current position
+      runner.style.animationPlayState = "paused";
+
+      blastConfetti();
+
+      // little bounce effect
+      runner.animate(
+        [{ transform: getComputedStyle(runner).transform }, { transform: "translateY(-8px)" }, { transform: "translateY(0)" }],
+        { duration: 380, easing: "cubic-bezier(.2,.8,.2,1)" }
+      );
+    }
+
+    runner.addEventListener('click', openGift);
+    runner.addEventListener('keydown', (e) => {
+      if(e.key === " " || e.key === "Enter"){
+        e.preventDefault();
+        openGift();
+      }
+    });
+  </script>
+</body>
+</html>
